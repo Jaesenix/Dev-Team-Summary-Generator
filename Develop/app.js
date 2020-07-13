@@ -1,4 +1,3 @@
-const inquirer = require("inquirer");
 const jest = require("jest");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
@@ -12,7 +11,77 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+function init() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter first and last name of Manager.",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "Enter Manager's ID number.",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter valid email address for Manager.",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "Enter office number for Manager.",
+            name: "officeNumber"
+        },
+    ])
+}
 
+function buildTeam() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter first and last name of employee.",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "Enter employee's ID number.",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter valid email address for employee.",
+            name: "email"
+        },
+        {
+            type: "list",
+            message: "Name this employee's position.",
+            name: "role",
+            choices: [
+                "Engineer",
+                "Intern"
+        ]
+        }
+    ]).then(answer => {
+        if (answer.role === "Engineer") {
+            return inquirer.prompt([
+                {
+                    type: "input",
+                    message: "What is the Engineer's github username?",
+                    name: "github"
+                }
+            ]).then(answer => {
+        if (answer.role === "Intern") {
+                return inquirer.prompt([
+                {
+                    type: "input",
+                    message: "What school does/did the Intern attend?",
+                    name: "school"
+                }
+            ])} 
+        }
+    )};
+}
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
