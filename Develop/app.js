@@ -16,39 +16,6 @@ const render = require("./lib/htmlRenderer");
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // Manager Questions
-function promptManager() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Enter first and last name of Manager.",
-            name: "name"
-        },
-        {
-            type: "input",
-            message: "Enter Manager's ID number.",
-            name: "id"
-        },
-        {
-            type: "input",
-            message: "Enter valid email address for Manager.",
-            name: "email"
-        },
-        {
-            type: "input",
-            message: "Enter office number for Manager.",
-            name: "officeNumber"
-        },
-    ]).then(answer => { 
-        buildTeam()
-        .then(answer => {
-            console.log(answer)
-    })
-});
-promptManager()
-
-};
-
-// Engineer/Intern Questions
 function buildTeam() {
     inquirer.prompt([
         {
@@ -71,12 +38,16 @@ function buildTeam() {
             message: "Name this employee's position.",
             name: "role",
             choices: [
+                "Manager",
                 "Engineer",
                 "Intern"
             ]
         }
     ]).then(answer => {
         switch (answer.role) {
+            case "Manager":
+                addManager();
+                break;
             case "Engineer":
                 addEngineer();
                 break;
@@ -87,10 +58,17 @@ function buildTeam() {
     });
 };
 
-// buildTeam()
-// .then(answer => {
-//     console.log(answer)
+buildTeam();
 
+function addManager() {
+    inquirer.prompt([
+        {
+        type: "input",
+        message: "Enter office number for Manager.",
+        name: "officeNumber"
+        }
+    ])
+};
     
 function addEngineer() {
     inquirer.prompt([
@@ -116,7 +94,9 @@ function addIntern() {
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
 
-// render(teamArr);
+teamArr.forEach(render);
+render(teamArr);
+
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
@@ -125,15 +105,16 @@ function addIntern() {
 // does not.
 
 function writeHTML() {
-    inquirer.prompt(questions).then((answers) => {
-        return fs.writeFile(outputPath + htmlRenderer(answers));
-    })
+    fs.writeFile(outputPath, htmlRenderer(employees), function (err) {
+        if (err) {
+            throw err;
+        }
+    });
 };
 
-// Write answers onto template 
-// function writeFile (filename, data) {
-//     fs.writeFilesSync(filename, data)
-// };
+writeHTML();
+
+buildTeam();
 
 
 // HINT: each employee type (manager, engineer, or intern) has slightly different
