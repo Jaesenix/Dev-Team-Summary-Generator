@@ -61,7 +61,7 @@ app.js         // Runs the application
 
 
 TESTS
-![TestsPassed](./test/testsPassed.png)
+![TestsPassed](test/testsPassed.png)
 
 
 ### Hints
